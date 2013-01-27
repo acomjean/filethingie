@@ -110,12 +110,13 @@ function ft_validate_filename($file)
 {
 
 	// Make sure the file doesn't start with a period, contain ".."  or end in a period.
-	$pattern = '/\.\.?/';
+	$pattern = '/\.\./';
+	$pattern2 = '/^\./';
 	
 	$result = !preg_match($pattern, $file);
+	$result2 = !preg_match($pattern2, $file);	
 	
-	
-	return $result;
+	return $result && $result2;
 }
 
 /**
@@ -541,7 +542,6 @@ function ft_do_action() {
 						// Upload was successfull
 
 						$result = ft_validate_filename($c['name']);
-						echo $c['name'] ." -> $result<br>";						
 						if (ft_validate_filename($c['name']) && ft_check_filetype($c['name']) && ft_check_file($c['name'])) {
 //						if (ft_check_filetype($c['name']) && ft_check_file($c['name'])) {						
 							if (file_exists(ft_get_dir()."/{$c['name']}")) {
