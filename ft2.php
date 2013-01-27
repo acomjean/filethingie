@@ -111,7 +111,8 @@ function ft_validate_filename($file)
 
 	// Make sure the file doesn't start with a period, contain ".."  or end in a period.
 	$pattern = '/\.\.?/';
-	$result = preg_match($pattern, $file);
+	
+	$result = !preg_match($pattern, $file);
 	
 	
 	return $result;
