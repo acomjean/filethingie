@@ -108,9 +108,12 @@ function ft_check_fileactions() {
  */
 function ft_validate_filename($file)
 {
-	// Make sure the file doesn't start with a period, contain unwanted characters, or end in a period.
-	$pattern = '^[^\.]((\.)?(([\w~!]){1,}))+$';
+
+	// Make sure the file doesn't start with a period, contain ".."  or end in a period.
+	$pattern = '/\.\.?/';
 	$result = preg_match($pattern, $file);
+	
+	
 	return $result;
 }
 
@@ -535,7 +538,11 @@ function ft_do_action() {
 					$c['name'] = ft_stripslashes($c['name']);
 					if ($c['error'] == 0) {
 						// Upload was successfull
+
+						$result = ft_validate_filename($c['name']);
+						echo $c['name'] ." -> $result<br>";						
 						if (ft_validate_filename($c['name']) && ft_check_filetype($c['name']) && ft_check_file($c['name'])) {
+//						if (ft_check_filetype($c['name']) && ft_check_file($c['name'])) {						
 							if (file_exists(ft_get_dir()."/{$c['name']}")) {
 							  $msglist++;
 							  ft_set_message(t('!file was not uploaded.', array('!file' => ft_get_nice_filename($c['name'], 20))) . ' ' . t("File already exists"), 'error');
